@@ -19,6 +19,7 @@ public class Model {
 	FloatBuffer vBuffer;
 	ShortBuffer iBuffer;
 
+	private int[] buffers;
 	
 	static float vertices[] = 
 	{
@@ -37,6 +38,7 @@ public class Model {
 	{
 		mProgram = new GLProgram(con, R.raw.vertex_shader, R.raw.fragment_shader);
 		mTexture = new Texture(con, R.raw.indice);
+		buffers = new int[2];
 		vBuffer = ByteBuffer.allocateDirect(vertices.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
@@ -49,6 +51,13 @@ public class Model {
 				.asShortBuffer();
 		iBuffer.put(indices);
 		iBuffer.position(0);
+		
+		glGenBuffers(2, buffers, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
+		glBufferData(GL_ARRAY_BUFFER, vertices.length * 4, vBuffer, GL_STATIC_DRAW);
+		
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.length * 2, iBuffer, GL_STATIC_DRAW);
 		
 		
 	}
@@ -76,18 +85,20 @@ public class Model {
 		
 		
 		vBuffer.position(0);
+		glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
 		glEnableVertexAttribArray(positionId);
-		glVertexAttribPointer(positionId, 3, GL_FLOAT, false, (3 + 4 + 2) * 4, vBuffer);
+		glVertexAttribPointer(positionId, 3, GL_FLOAT, false, (3 + 4 + 2) * 4, 0);
 		
 		vBuffer.position(3);
 		glEnableVertexAttribArray(colorId);
-		glVertexAttribPointer(colorId, 4, GL_FLOAT, false, (3 + 4 + 2) * 4 , vBuffer);
+		glVertexAttribPointer(colorId, 4, GL_FLOAT, false, (3 + 4 + 2) * 4 , 0);
 		
 		vBuffer.position(7);
 		glEnableVertexAttribArray(textAttribute);
-		glVertexAttribPointer(textAttribute, 2, GL_FLOAT, false, (3 + 4 + 2) * 4 , vBuffer);
+		glVertexAttribPointer(textAttribute, 2, GL_FLOAT, false, (3 + 4 + 2) * 4 , 7*4);
 		
-		glDrawElements(GL_TRIANGLES, 6 , GL_UNSIGNED_SHORT, iBuffer);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
+		glDrawElements(GL_TRIANGLES, 6 , GL_UNSIGNED_SHORT, 0);
 		
 		glDisableVertexAttribArray(positionId);
 		glDisableVertexAttribArray(colorId);

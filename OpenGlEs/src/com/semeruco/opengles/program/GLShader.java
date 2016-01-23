@@ -41,11 +41,7 @@ public abstract class GLShader {
 		BufferedReader reader = new BufferedReader
 				( new InputStreamReader
 						(context.getResources().openRawResource(res)));
-		
-		if(reader == null)
-		{
-			
-		}
+
 		
 		String line;
 		StringBuilder body= new StringBuilder();
