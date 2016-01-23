@@ -15,6 +15,8 @@ public abstract class GLShader {
 	public static final int POSITION_OFFSET = 0;
 	public static final int COLOR_OFFSET = 3;
 	public static final int TEXTURE_OFFSET = 7;
+	public static final int COLOR_BYTES_OFFSET = 3 * 4;
+	public static final int TEXTURE_BYTES_OFFSET = 7 * 4;
 	public static final int VERTEX_STRIDE = (3 + 4 + 2) * 4;
 	
 	private boolean lookingAttributes = true;

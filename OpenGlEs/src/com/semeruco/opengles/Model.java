@@ -9,44 +9,31 @@ import android.content.Context;
 import static android.opengl.GLES20.*;
 
 import com.semeruco.opengles.program.GLProgram;
+import com.semeruco.opengles.program.GLShader;
 import com.semeruco.opengles.util.Logger;
 
 public class Model {
 	
 	private GLProgram mProgram;
 	private Texture mTexture;
-	
-	FloatBuffer vBuffer;
-	ShortBuffer iBuffer;
 
 	private int[] buffers;
 	
-	static float vertices[] = 
-	{
-		-0.750f, -0.750f, 0.0f, 1.0f, 0.20f, 0.0f, 01.0f, 0.0f, 1.0f,
-		 0.750f, -0.750f, 0.0f, 1.0f, 0.20f, 0.0f, 01.0f, 1.0f, 1.0f,
-		 0.75f,  0.750f, 0.0f, 1.0f, 0.20f, 0.0f, 01.0f, 1.0f, 0.0f,
-		-0.750f,  0.750f, 0.0f, 1.0f, 0.20f, 0.0f, 0.50f, 0.0f, 0.0f
-	};
+
 	
-	static short indices[] = 
-		{
-			0, 1, 2, 0, 2, 3
-		};
-	
-	public Model(Context con)
+	public Model(Context con, float[] vertices, short[] indices)
 	{
 		mProgram = new GLProgram(con, R.raw.vertex_shader, R.raw.fragment_shader);
-		mTexture = new Texture(con, R.raw.indice);
+		mTexture = new Texture(con, R.raw.raziel);
 		buffers = new int[2];
-		vBuffer = ByteBuffer.allocateDirect(vertices.length * 4)
+		FloatBuffer vBuffer = ByteBuffer.allocateDirect(vertices.length * 4)
 				.order(ByteOrder.nativeOrder())
 				.asFloatBuffer();
 		vBuffer.put(vertices);
 		vBuffer.position(0);
 		
 		
-		iBuffer = ByteBuffer.allocateDirect(indices.length * 2)
+		ShortBuffer iBuffer = ByteBuffer.allocateDirect(indices.length * 2)
 				.order(ByteOrder.nativeOrder())
 				.asShortBuffer();
 		iBuffer.put(indices);
@@ -83,19 +70,16 @@ public class Model {
 			glUniform1i(uSampleId, 0);
 		}
 		
-		
-		vBuffer.position(0);
+
 		glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
 		glEnableVertexAttribArray(positionId);
-		glVertexAttribPointer(positionId, 3, GL_FLOAT, false, (3 + 4 + 2) * 4, 0);
+		glVertexAttribPointer(positionId, 3, GL_FLOAT, false, GLShader.VERTEX_STRIDE, 0);
 		
-		vBuffer.position(3);
 		glEnableVertexAttribArray(colorId);
-		glVertexAttribPointer(colorId, 4, GL_FLOAT, false, (3 + 4 + 2) * 4 , 0);
+		glVertexAttribPointer(colorId, 4, GL_FLOAT, false, GLShader.VERTEX_STRIDE , GLShader.COLOR_BYTES_OFFSET);
 		
-		vBuffer.position(7);
 		glEnableVertexAttribArray(textAttribute);
-		glVertexAttribPointer(textAttribute, 2, GL_FLOAT, false, (3 + 4 + 2) * 4 , 7*4);
+		glVertexAttribPointer(textAttribute, 2, GL_FLOAT, false, GLShader.VERTEX_STRIDE, GLShader.TEXTURE_BYTES_OFFSET);
 		
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
 		glDrawElements(GL_TRIANGLES, 6 , GL_UNSIGNED_SHORT, 0);
@@ -103,6 +87,9 @@ public class Model {
 		glDisableVertexAttribArray(positionId);
 		glDisableVertexAttribArray(colorId);
 		glDisableVertexAttribArray(textAttribute);
+		
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
 }

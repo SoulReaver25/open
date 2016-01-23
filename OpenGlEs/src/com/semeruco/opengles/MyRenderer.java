@@ -15,6 +15,18 @@ public class MyRenderer implements Renderer {
 
 	private Context mContext;
 	private Model mModel;
+	float vertices[] = 
+	{
+		-0.750f, -0.750f, 0.0f, 1.0f, 0.20f, 0.0f, 0.10f, 0.0f, 1.0f,
+		 0.750f, -0.750f, 0.0f, 1.0f, 0.20f, 0.0f, 0.10f, 1.0f, 1.0f,
+		 0.75f,  0.750f, 0.0f, 1.0f, 0.20f, 0.0f, 0.10f, 1.0f, 0.0f,
+		-0.750f,  0.750f, 0.0f, 1.0f, 0.20f, 0.0f, 0.10f, 0.0f, 0.0f
+	};
+	
+	short indices[] = 
+		{
+			0, 1, 2, 0, 2, 3
+		};
 	
 	public MyRenderer ( Context context )
 	{
@@ -27,7 +39,7 @@ public class MyRenderer implements Renderer {
 		// 
 		
 		GLES20.glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-		mModel = new Model(mContext);
+		mModel = new Model(mContext, vertices, indices);
 	}
 
 
