@@ -1,4 +1,4 @@
-package com.semeruco.opengles;
+package com.semeruco.opengles.model;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -8,23 +8,23 @@ import java.nio.ShortBuffer;
 import android.content.Context;
 import static android.opengl.GLES20.*;
 
+import com.semeruco.opengles.R;
+import com.semeruco.opengles.R.raw;
 import com.semeruco.opengles.program.GLProgram;
 import com.semeruco.opengles.program.GLShader;
 import com.semeruco.opengles.util.Logger;
 
 public class Model {
 	
-	private GLProgram mProgram;
 	private Texture mTexture;
+	private GLProgram mProgram;
 
 	private int[] buffers;
 	
-
-	
 	public Model(Context con, float[] vertices, short[] indices)
 	{
-		mProgram = new GLProgram(con, R.raw.vertex_shader, R.raw.fragment_shader);
 		mTexture = new Texture(con, R.raw.raziel);
+		mProgram = new GLProgram(con, R.raw.vertex_shader, R.raw.fragment_shader);
 		buffers = new int[2];
 		FloatBuffer vBuffer = ByteBuffer.allocateDirect(vertices.length * 4)
 				.order(ByteOrder.nativeOrder())
@@ -59,7 +59,6 @@ public class Model {
 		int textAttribute = mProgram.getLocation("iCoord");
 		int uSampleId = mProgram.getLocation("sampler");
 		
-		Logger.LOG = true;
 		Logger.e("MODEL", "posId " + positionId + " colorId " + colorId + 
 				" textAttribute "  + " Sampler " );
 		

@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import com.semeruco.opengles.Attribute;
-
 import android.content.Context;
 import static android.opengl.GLES20.*;
 

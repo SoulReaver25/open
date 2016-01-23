@@ -1,4 +1,4 @@
-package com.semeruco.opengles;
+package com.semeruco.opengles.model;
 
 import static android.opengl.GLES20.*;
 

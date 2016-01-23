@@ -3,6 +3,9 @@ package com.semeruco.opengles;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import com.semeruco.opengles.model.Model;
+import com.semeruco.opengles.program.GLProgram;
+
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -15,6 +18,7 @@ public class MyRenderer implements Renderer {
 
 	private Context mContext;
 	private Model mModel;
+		
 	float vertices[] = 
 	{
 		-0.750f, -0.750f, 0.0f, 1.0f, 0.20f, 0.0f, 0.10f, 0.0f, 1.0f,
